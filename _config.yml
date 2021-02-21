@@ -5,6 +5,8 @@ tagline: "cn"
 description: "nya~"  # 一句话描述你的博客
 baseurl: ""
 url: "http://nekoyurico.me/"  # 此处填写你的博客地址 
+language: zh-CN     #主题语言
+timezone: Asia/Shanghai    #中国的时区
 
 # About/contact
 owner: 
