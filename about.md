@@ -8,7 +8,7 @@ header-img: "img/green.jpg"
 这里是Neko_Yurico！
 
 <span class="author flex-self-stretch" itemprop="author">
-      <a class="url fn" rel="author" data-hovercard-type="user" data-hovercard-url="github.com/users/Neko-Yurico/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="github.com/Neko-Yurico">Neko-Yurico</a>
+      <a class="url fn" rel="author" data-hovercard-type="user" data-hovercard-url="github.com/users/Neko-Yurico/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="github.com/Neko-Yurico">Neko-Yurico的github主页</a>
     </span>
 
 -普通音游车万人
