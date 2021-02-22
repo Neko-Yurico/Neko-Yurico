@@ -16,7 +16,7 @@ header-img: "img/semantic.jpg"
 
 <ul class="listing">
 {% for tag in site.tags %}
-  <li class="listing-seperator" id="{{ tag[0] }}">{{ tag[0] }}</li>
+  <p style="text-align: center;"><li class="listing-seperator" id="{{ tag[0] }}">{{ tag[0] }}</li></p>
 {% for post in tag[1] %}
   <li class="listing-item">
   <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
@@ -25,7 +25,7 @@ header-img: "img/semantic.jpg"
 {% endfor %}
 {% endfor %}
 </ul>
-<p style="text-align: center;">
+
 <script src="/media/js/jquery.tagcloud.js" type="text/javascript" charset="utf-8"></script> 
 <script language="javascript">
 $.fn.tagcloud.defaults = {
@@ -36,4 +36,4 @@ $.fn.tagcloud.defaults = {
 $(function () {
     $('#tag_cloud a').tagcloud();
 });
-</script></p>
+</script>
