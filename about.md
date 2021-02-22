@@ -5,7 +5,9 @@ description: "关于我 "
 header-img: "img/green.jpg"
 ---
 
-这里是Neko_Yurico！
+<p style="text-align: center;">这里是Neko_Yurico！</p>
+<p style="text-align: center;"><a title="Neko-Yurico的github主页" href="https://github.com/Neko-Yurico" target="_blank" rel="noopener noreferrer">github主页</a></p>
+<p style="text-align: center;">&nbsp;&nbsp;</p>
 <p style="text-align: center;">普通音游车万人</p>
 <p style="text-align: center;">ctb萌新1枚（欢迎大佬们带我玩</p>
 <p style="text-align: center;">&nbsp;&nbsp;</p>
