@@ -6,10 +6,6 @@ header-img: "img/green.jpg"
 ---
 
 <p style="text-align: center;">这里是Neko_Yurico！</p>
-<p style="text-align: center;"><a title="Neko-Yurico的github主页" href="https://github.com/Neko-Yurico" target="_blank" rel="noopener noreferrer">github主页</a></p>
-<p style="text-align: center;">&nbsp;&nbsp;</p>
-<p style="text-align: center;">普通音游车万人</p>
-<p style="text-align: center;">ctb萌新1枚（欢迎大佬们带我玩</p>
 <p style="text-align: center;">&nbsp;&nbsp;</p>
 <p style="text-align: center;">================================</p>
 <p style="text-align: center;">ff14莫古力 咚咚一库贼@白金幻象《怪咖》</p>
@@ -23,9 +19,8 @@ header-img: "img/green.jpg"
 <p style="text-align: center;">Country Ranking： #220~</p>
 <p style="text-align: center;">================================</p>
 <p style="text-align: center;">ctf队名：啥都不会</p>
-<p style="text-align: center;">成员：帆（队长），<a title="LxEgotist的直播间" href="https://live.bilibili.com/300832" target="_blank" rel="noopener noreferrer">LxEgotist</a>，<a title="貓耳ゆりこ的直播间" href="https://live.bilibili.com/29241" target="_blank" rel="noopener noreferrer">Neko_Yurico</a>，大菜鸡（临时）</p>
+<p style="text-align: center;">成员&直播间：帆（队长），<a title="LxEgotist的直播间" href="https://live.bilibili.com/300832" target="_blank" rel="noopener noreferrer">LxEgotist</a>，<a title="貓耳ゆりこ的直播间" href="https://live.bilibili.com/29241" target="_blank" rel="noopener noreferrer">Neko_Yurico</a>，大菜鸡（临时）</p>
 <p style="text-align: center;">================================</p>
-<p style="text-align: center;"><a title="欢迎加入猫耳教应援团" href="https://live.bilibili.com/133" target="_blank" rel="noopener noreferrer">猫耳爱丽丝的直播间</a></p>
 <p style="text-align: center;"><a title="欢迎 &middot; 知识库 | osu!" href="https://osu.ppy.sh/wiki/zh/Welcome" target="_blank" rel="noopener noreferrer">Welcome to OSU!</a></p>
 <p style="text-align: center;"><a title="CTF Wiki" href="https://wiki.x10sec.org/" target="_blank" rel="noopener noreferrer">CTF wiki</a></p>
 <p style="text-align: center;"><a title="最终幻想XIV中文维基 - 灰机wiki" href="https://ff14.huijiwiki.com/wiki/%E9%A6%96%E9%A1%B5" target="_blank" rel="noopener noreferrer">ff14 灰机wiki</a></p>
