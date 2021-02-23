@@ -18,7 +18,9 @@
                     <li>
                         <a href="https://space.bilibili.com/{{ site.bilibili_userid }}" target="_blank" >
                             <span class="iconfont">
-                                <i class="iconfont icon-bilibili1"></i>
+                                <svg class="icon" aria-hidden="true">
+                                    <use xlink:href="#icon-bilibili1"></use>
+                                </svg>
                             </span>
                         </a>
                     </li>
@@ -117,6 +119,18 @@
 
 <!-- Custom Theme JavaScript -->
 <script src="{{ "/js/clean-blog.min.js " | prepend: site.baseurl }}"></script>
+
+<!-- iconfont plus -->
+<script src="/js/iconfont.js"></script>
+<style>
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+</style>
 
 
 
