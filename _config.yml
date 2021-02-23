@@ -20,11 +20,12 @@ favicon: img/favicon.png # 浏览器地址栏小图标，可自定义更改
 
 douban_username: 
 twitter_username: 
-github_username: Neko-Yurico
 facebook_username: 
 weibo_username: 
 zhihu_username: 
+github_username: Neko-Yurico
 bilibili_userid: 6968856
+qq_userid: 945998493
 
 # Build settings  
 # use Github Flavored Markdown !important  

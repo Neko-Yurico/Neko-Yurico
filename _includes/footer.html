@@ -19,7 +19,7 @@
                         <a href="https://space.bilibili.com/{{ site.bilibili_userid }}" target="_blank" >
                             <span class="fa-stack fa-lg">
                                 <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="iconfont icon-bilibili-fill2" aria-hidden="true"></i>
+                                <i class="fa fa-bilibili fa-stack-1x fa-inverse" aria-hidden="true"></i>
                             </span>
                         </a>
                     </li>
@@ -31,6 +31,17 @@
                             <span class="fa-stack fa-lg">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-github fa-stack-1x fa-inverse" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </li>
+                    {% endif %}
+                  
+                    {% if site.qq_userid %}
+                    <li>
+                        <a href="http://wpa.qq.com/msgrd?v=3&uin={{ site.qq_userid }}&site=qq&menu=yes" target="_blank" >
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-qq fa-stack-1x fa-inverse" aria-hidden="true"></i>
                             </span>
                         </a>
                     </li>
