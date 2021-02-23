@@ -17,7 +17,10 @@
                     {% if site.bilibili_userid %}
                     <li>
                         <a href="https://space.bilibili.com/{{ site.bilibili_userid }}" target="_blank" >
-                            <span class="iconfont icon-bilibili2" style="font-size:350%;"></span>
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="iconfont icon-bilibili-fill2" aria-hidden="true"></i>
+                            </span>
                         </a>
                     </li>
                     {% endif %}
