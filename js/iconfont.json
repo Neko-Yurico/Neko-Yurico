@@ -1,0 +1,44 @@
+{
+  "id": "2383523",
+  "name": "nekoyurico.me",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "17104198",
+      "name": "bilibili-fill",
+      "font_class": "bilibili-fill1",
+      "unicode": "e7c8",
+      "unicode_decimal": 59336
+    },
+    {
+      "icon_id": "18168402",
+      "name": "bilibili",
+      "font_class": "bilibili1",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "2306764",
+      "name": "BILIBILI_LOGO",
+      "font_class": "bilibili",
+      "unicode": "e6b4",
+      "unicode_decimal": 59060
+    },
+    {
+      "icon_id": "10918080",
+      "name": "bilibili-line",
+      "font_class": "bilibili-line",
+      "unicode": "e75d",
+      "unicode_decimal": 59229
+    },
+    {
+      "icon_id": "17510992",
+      "name": "bilibili-fill",
+      "font_class": "bilibili-fill",
+      "unicode": "e7b1",
+      "unicode_decimal": 59313
+    }
+  ]
+}
