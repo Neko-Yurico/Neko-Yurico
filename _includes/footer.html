@@ -47,6 +47,17 @@
                     </li>
                     {% endif %}
                   
+                    {% if site.mail_address %}
+                    <li>
+                        <a href="mailto:{{ site.mail_address }}" target="_blank" >
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </li>
+                    {% endif %}
+                  
                     <!--
                     {% if site.twitter_username %}
                     <li>
