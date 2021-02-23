@@ -13,9 +13,9 @@ description:
 
 <div class="container">
     <ul class="time-horizontal">
-        <li><b></b>2021-02-20<br/>准备</li>
-        <li><b></b>2021-02-21<br/>购买域名</li>
-        <li><b></b>2021-02-21<br/>开站</li>
-        <li><b></b>2021-02-22<br/>第一篇博客</li>
+        <li><b>2021-02-20<br/><b>准备</b></li>
+        <li>2021-02-21<br/><b>购买域名<br/>开站</b></li>
+        <li>2021-02-22<br/><b>撰写第一篇博客</b></li>
+        <li>2021-02-23<br/><b>成功载入disqus评论模块</b></li>
     </ul>
 </div>
