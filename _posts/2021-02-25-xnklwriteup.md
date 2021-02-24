@@ -26,8 +26,15 @@ description:
 </iframe>
 </p>
 <p style="text-align: center;">&nbsp;&nbsp;</p>
-<p style="text-align: center;">&nbsp;&nbsp;</p>
-<p style="text-align: center;"><a href="/DLsitePoint.html">点我前往DLsite点数兑换说明页面</a></p>
+<p style="text-align: center;">&nbsp;&nbsp;</p><div class="modify_white_box">
+<div class="modify_white_box_inner">
+<div class="modify_white_box_main">
+
+<p class="modify_btn"><button class="btn_post size_xl fs16"><i>前往DLsite点数说明页</i></button></p>
+
+</div>
+</div>
+</div>
 
 
 
