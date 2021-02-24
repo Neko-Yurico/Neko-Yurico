@@ -15,5 +15,5 @@ description:
     <li><p>2021-02-20<br/><b>准备</b></p></li>
     <li><p>2021-02-21<br/><b>购买域名<br/>开站</b></p></li>
     <li><p>2021-02-22<br/><b>撰写第一篇博客</b></p></li>
-    <li><p>2021-02-23<br/><b>成功载入disqus评论模块<br/>完成footer中bilibili/QQ/mail的跳转链接（bilibili链接暂时无法更换至阿里iconfont）</b></p></li>
+    <li><p>2021-02-23<br/><b>成功载入disqus评论模块</b></p></li>
 </ul>
