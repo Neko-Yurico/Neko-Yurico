@@ -2,7 +2,7 @@
 layout: page
 title: "About"
 description: "关于我 " 
-header-img: "img/green.jpg"
+header-img: "img/light-green.jpg"
 ---
 
 <p style="text-align: center;">这里是Neko_Yurico！</p>
