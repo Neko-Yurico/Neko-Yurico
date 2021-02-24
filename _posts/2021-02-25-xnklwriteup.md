@@ -19,8 +19,10 @@ description:
 
 
 <p style="text-align: center;">
-<iframe src="/source/posts/2021-02-25-xnklwriteup/Writeup.pdf" width="100%" height="500%">
-<a href="/source/posts/2021-02-25-xnklwriteup/新年快乐.rar">原题及Writeup下载</a><br/><a href="/source/posts/2021-02-25-xnklwriteup/Writeup.pdf">Writeup PDF单独下载</a>
+<iframe src="/source/posts/2021-02-25-xnklwriteup/Writeup.pdf" width="100%" height="500%" style="
+    height: 804px;
+">
+<a href="/source/posts/2021-02-25-xnklwriteup/新年快乐.rar">原题及Writeup下载</a><br /><a href="/source/posts/2021-02-25-xnklwriteup/Writeup.pdf">Writeup PDF单独下载</a>
 </iframe>
 </p>
 
