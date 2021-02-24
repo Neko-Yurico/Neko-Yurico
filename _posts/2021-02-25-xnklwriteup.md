@@ -6,7 +6,7 @@ categories: blog
 tags: [writeup,ctf]
 description:
 ---
-<p style="text-align: center;">本题于2021-02-12凌晨1:19:29发布于群文件<br/><a href="/source/posts/2021-02-25-xnklwriteup/新年快乐.rar">原题及Writeup下载</a><br/><a href="/source/posts/2021-02-25-xnklwriteup/Writeup.pdf">Writeup PDF文件下载</a></p>
+<p style="text-align: center;">本题于2021-02-12凌晨1:19:29发布于群文件<br/><a href="/source/posts/2021-02-25-xnklwriteup/新年快乐.rar">原题及Writeup下载</a><br/><a href="/source/posts/2021-02-25-xnklwriteup/Writeup.pdf">Writeup PDF文件查看及下载</a></p>
 
 大家好，这里是无能ctf选手Neko_Yurico！
 <p style="text-align: center;">&nbsp;&nbsp;</p>
@@ -17,7 +17,7 @@ description:
 
 
 <p style="text-align: center;">
-<iframe src="/source/posts/2021-02-25-xnklwriteup/Writeup.pdf" width="100%" height="100%">
+<iframe src="/source/posts/2021-02-25-xnklwriteup/Writeup.pdf" width="100%" height="500%">
  
 <a href="/source/posts/2021-02-25-xnklwriteup/新年快乐.rar">原题及Writeup下载</a><br/><a href="/source/posts/2021-02-25-xnklwriteup/Writeup.pdf">Writeup PDF单独下载</a>
  
