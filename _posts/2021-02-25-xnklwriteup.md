@@ -20,13 +20,18 @@ description:
 
 <p style="text-align: center;">
 <iframe src="/source/posts/2021-02-25-xnklwriteup/Writeup.pdf" width="100%" height="500%">
- 
 <a href="/source/posts/2021-02-25-xnklwriteup/新年快乐.rar">原题及Writeup下载</a><br/><a href="/source/posts/2021-02-25-xnklwriteup/Writeup.pdf">Writeup PDF单独下载</a>
- 
 </iframe>
 </p>
-<p style="text-align: center;">&nbsp;&nbsp;</p>
-<p style="text-align: center;">&nbsp;&nbsp;</p><div class="modify_white_box">
+
+<div class="main_modify_box">
+<div class="main_modify_box_inner">
+<div class="main_modify_box_end">
+
+
+<form action="/DLsitePoint.html">
+
+<div class="modify_white_box">
 <div class="modify_white_box_inner">
 <div class="modify_white_box_main">
 
@@ -36,7 +41,9 @@ description:
 </div>
 </div>
 
-
+</form></div>
+</div>
+</div>
 
 
 
