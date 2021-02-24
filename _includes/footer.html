@@ -17,10 +17,9 @@
                     {% if site.bilibili_userid %}
                     <li>
                         <a href="https://space.bilibili.com/{{ site.bilibili_userid }}" target="_blank" >
-                            <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-bilibili fa-stack-1x fa-inverse" aria-hidden="true"></i>
-                            </span>
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-bilibili1"></use>
+                            </svg>
                         </a>
                     </li>
                     {% endif %}
@@ -145,8 +144,8 @@
 <script src="/js/iconfont.js"></script>
 <style>
 .icon {
-  width: 1em;
-  height: 1em;
+  width: 2.5em;
+  height: 2.5em;
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
