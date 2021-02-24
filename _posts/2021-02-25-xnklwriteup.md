@@ -13,7 +13,7 @@ description:
 <p><span title="你知道的太多了" class="heimu">这次的兑换码居然真的被抢走了，果然还是太简单了吗</span></p>
 <p></p>
 <p>
-由于脑子和手实在无法完成创作复杂的题目，这里只能出几题简单的Crypto和Misc玩玩了,希望ctf大佬们下手轻点。</br>以后有机会的话说不定会出几题Reverse或者Web的题吧，但是我这人会做题不会出题，可能需要一些大佬们的帮助。
+由于脑子和手实在无法完成创作复杂的题目，这里只能出几题简单的Crypto和Misc玩玩了,希望ctf大佬们下手轻点。<br/>以后有机会的话说不定会出几题Reverse或者Web的题吧，但是我这人会做题不会出题，可能需要一些大佬们的帮助。
 </p>
 <p style="text-align: center;">&nbsp;&nbsp;</p>
 
@@ -22,7 +22,7 @@ description:
 <iframe src="/source/posts/2021-02-25-xnklwriteup/Writeup.pdf" width="100%" height="500%" style="
     height: 804px;
 ">
-<a href="/source/posts/2021-02-25-xnklwriteup/新年快乐.rar">原题及Writeup下载</a><br /><a href="/source/posts/2021-02-25-xnklwriteup/Writeup.pdf">Writeup PDF单独下载</a>
+<a href="/source/posts/2021-02-25-xnklwriteup/新年快乐.rar">原题及Writeup下载</a><br/><a href="/source/posts/2021-02-25-xnklwriteup/Writeup.pdf">Writeup PDF单独下载</a>
 </iframe>
 </p>
 
