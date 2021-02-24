@@ -13,16 +13,6 @@
                             </span>
                         </a>
                     </li>
-
-                    {% if site.bilibili_userid %}
-                    <li>
-                        <a href="https://space.bilibili.com/{{ site.bilibili_userid }}" target="_blank" >
-                            <svg class="icon" aria-hidden="true">
-                                <use xlink:href="#icon-bilibili1"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    {% endif %}
                   
                     {% if site.github_username %}
                     <li>
@@ -31,6 +21,16 @@
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-github fa-stack-1x fa-inverse" aria-hidden="true"></i>
                             </span>
+                        </a>
+                    </li>
+                    {% endif %}
+                  
+                    {% if site.bilibili_userid %}
+                    <li>
+                        <a href="https://space.bilibili.com/{{ site.bilibili_userid }}" target="_blank" >
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-bilibili1"></use>
+                            </svg>
                         </a>
                     </li>
                     {% endif %}
@@ -146,7 +146,7 @@
 .icon {
   width: 2.5em;
   height: 2.5em;
-  vertical-align: -0.15em;
+  vertical-align: -1em;
   fill: currentColor;
   overflow: hidden;
 }
