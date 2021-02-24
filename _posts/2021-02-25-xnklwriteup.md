@@ -29,13 +29,11 @@ description:
 <div class="main_modify_box_end">
 
 
-<form action="/DLsitePoint.html">
-
 <div class="modify_white_box">
 <div class="modify_white_box_inner">
 <div class="modify_white_box_main">
 
-<p class="modify_btn"><button class="btn_post size_xl fs16"><i>前往DLsite点数说明页</i></button></p>
+<p class="modify_btn"><button formaction="/DLsitePoint.html"><i>前往DLsite点数说明页</i></button></p>
 
 </div>
 </div>
