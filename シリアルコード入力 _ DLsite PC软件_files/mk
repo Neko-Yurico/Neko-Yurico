@@ -1,0 +1,7 @@
+
+(function(){
+    var s = 'https://bypass.ad-stir.com/rmk?group_id=15048&ref=' + encodeURIComponent(location.href);
+    var e = document.createElement('script');
+    e.src = s;
+    document.body.appendChild(e);
+})();

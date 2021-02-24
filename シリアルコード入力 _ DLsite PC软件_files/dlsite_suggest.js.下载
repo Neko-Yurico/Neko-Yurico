@@ -1,0 +1,734 @@
+(function(){
+  'use strict';
+  
+  var locale = null;
+  
+  if (typeof dlsite.getLocale === 'function') {
+    locale = dlsite.getLocale();
+  } else if (/^\/eng/.test(location.pathname)) {
+    locale = 'en';
+  } else {
+    locale = 'ja-jp';
+  }
+  
+  var i18n = {
+    'ja-jp': {
+      work_name: '作品',
+      maker_name: 'サークル/ブランド',
+      more: '「%s」でキーワード検索する',
+      more_count: '%s件の候補を表示中',
+      ADL: '18禁',
+      DOH: '同人誌',
+      SOF: '同人ソフト',
+      GAM: '同人ゲーム',
+      ACN: 'アクション',
+      ADV: 'アドベンチャー',
+      AMT: '音素材',
+      COM: 'マンガ',
+      DNV: 'デジタルノベル',
+      ET3: 'その他',
+      ETC: 'その他ゲーム',
+      ICG: 'CG・イラスト',
+      IMT: '画像素材',
+      MNG: 'マンガ',
+      MOV: '動画',
+      MUS: '音楽',
+      NRE: 'ノベル',
+      PZL: 'パズル',
+      QIZ: 'クイズ',
+      RPG: 'ロールプレイング',
+      SCM: '劇画',
+      SLN: 'シミュレーション',
+      SOU: '音声',
+      STG: 'シューティング',
+      TBL: 'テーブル',
+      TOL: 'ツール/アクセサリ',
+      TYP: 'タイピング',
+      KSV: '官能小説'
+    },
+    'en': {
+      work_name: 'Title',
+      maker_name: 'Circle/Brand',
+      more: 'See more results',
+      more_count: 'Displaying top %s results',
+      ADL: 'R18++',
+      DOH: 'Doujinsji',
+      SOF: 'Software',
+      GAM: 'Game',
+      ACN: 'Action',
+      ADV: 'Adventure',
+      AMT: 'Audio Material',
+      DNV: 'Digital Novel',
+      ET3: 'Other Format',
+      ETC: 'Other Games',
+      ICG: 'CG / Illustrations',
+      IMT: 'Image Material',
+      MNG: 'Manga',
+      MOV: 'Anime',
+      MUS: 'Music',
+      NRE: 'Novel',
+      PZL: 'Puzzle',
+      QIZ: 'Quiz',
+      RPG: 'RPG',
+      SLN: 'Simulation',
+      SOU: 'Voice',
+      STG: 'Shooter',
+      TBL: 'Tabletop',
+      TOL: 'Utility',
+      TYP: 'Typing',
+      KSV: '-'
+    },
+    'zh-tw': {
+      work_name: '作品',
+      maker_name: '社團名/品牌',
+      more: '以「%s」進行關鍵字搜尋',
+      more_count: '顯示%s件的搜尋結果',
+      ADL: '18禁',
+      DOH: '同人誌',
+      SOF: '同人軟體',
+      GAM: '同人遊戲',
+      ACN: '動作',
+      ADV: '冒險',
+      AMT: '聲音素材',
+      COM: '漫畫',
+      DNV: '電子小說',
+      ET3: '其他',
+      ETC: '其他遊戲',
+      ICG: 'CG・插畫',
+      IMT: '圖片素材',
+      MNG: '漫畫',
+      MOV: '影片',
+      MUS: '音樂',
+      NRE: '小說',
+      PZL: '益智',
+      QIZ: '解謎',
+      RPG: '角色扮演',
+      SCM: '劇畫',
+      SLN: '模擬',
+      SOU: '音聲',
+      STG: '射擊',
+      TBL: '桌面',
+      TOL: '工具/配件',
+      TYP: '打字',
+      KSV: '成人小說'
+    },
+    'zh-cn': {
+      work_name: '作品',
+      maker_name: '社团名/商家',
+      more: '以「%s」进行关键字搜索',
+      more_count: '显示%s件的搜索结果',
+      ADL: '18禁',
+      DOH: '同人志',
+      SOF: '同人软件',
+      GAM: '同人游戏',
+      ACN: '动作',
+      ADV: '冒险',
+      AMT: '声音素材',
+      COM: '漫画',
+      DNV: '电子小说',
+      ET3: '其他',
+      ETC: '其他游戏',
+      ICG: 'CG・插画',
+      IMT: '画像素材',
+      MNG: '漫画',
+      MOV: '视频',
+      MUS: '音乐',
+      NRE: '小说',
+      PZL: '益智',
+      QIZ: '解谜',
+      RPG: '角色扮演',
+      SCM: '剧画',
+      SLN: '模拟',
+      SOU: '音声',
+      STG: '射击',
+      TBL: '桌面',
+      TOL: '道具/装饰',
+      TYP: '打字',
+      KSV: '官能小说'
+    },
+    'ko-kr': {
+      work_name: '작품',
+      maker_name: '서클/브랜드',
+      more: '"%s"로 키워드 검색을 한다',
+      more_count: '%s건의 후보를 표시중',
+      ADL: '18금',
+      DOH: '동인지',
+      SOF: '동인 소프트',
+      GAM: '동인 게임',
+      ACN: '액션',
+      ADV: '어드벤쳐',
+      AMT: '소리 소재',
+      COM: '만화',
+      DNV: '디지털 소설',
+      ET3: '기타',
+      ETC: '기타 게임',
+      ICG: 'CG・일러스트',
+      IMT: '이미지 소재',
+      MNG: '만화',
+      MOV: '동영상',
+      MUS: '음악',
+      NRE: '소설',
+      PZL: '퍼즐',
+      QIZ: '퀴즈',
+      RPG: '롤플레잉',
+      SCM: '극화',
+      SLN: '시뮬레이션',
+      SOU: '음성',
+      STG: '슈팅',
+      TBL: '테이블',
+      TOL: '툴/악세사리',
+      TYP: '타이핑',
+      KSV: '관능 소설'
+    },
+  };
+  
+  var messages = i18n[locale] || i18n['ja-jp'];
+  
+  var suggest = {
+    config: {
+      url: '/suggest/',
+      suggest_box_margin_bottom: 2,
+      search_threshold: 0
+    },
+    $form: null,
+    $input: null,
+    $box: null,
+    $site_category: null,
+    $age_category: null,
+    is_touch: false,
+    is_female: false,
+    is_error: false,
+    touch_max_show_work: 3,
+    site_id: 'general-jp',
+    last_val: '',
+    request_time: 0,
+    timer: null
+  };
+  
+  suggest.init = function() {
+    suggest.is_touch = (/touch$/.test(dlsite.getName()));
+    suggest.is_female = dlsite.isFemale();
+    // エラー検知
+    let is_error = document.getElementById('is_error');
+    if (is_error === null) {
+      suggest.is_error = false;
+    } else {
+      suggest.is_error = is_error;
+    }
+    
+    if(suggest.is_touch) {
+      suggest.$input = $('#fs_search input[name="keyword"]');
+      suggest.$site_category = $('#form_work_category');
+      suggest.$age_category = $('#form_age_category');
+    } else {
+      suggest.$input = $('#search_text');
+      suggest.$site_category = $('.globalSearchSelect-list');
+    }
+    
+    suggest.$form = suggest.$input.parents('form');
+    
+    if(suggest.$form.length === 0 || suggest.$input.length === 0) {
+      return false;
+    }
+    
+    suggest.$box = $('<ul class="suggest'+(suggest.is_touch ? ' touch' : '')+(suggest.is_female ? ' girls' : '')+(dlsite.isAdult() && dlsite.getLang() === 'en' ? ' ecchi-eng' : '')+'"></ul>');
+    suggest.last_val = suggest.$input.val();
+    
+    if(location.host !== 'www.dlsite.com' && location.host !== 'www.origin.dlsite.com') {
+      // suggest.config.url = suggest.config.url.replace('//suggest', '//suggest.dev');
+    }
+    
+    if (suggest.is_touch) {
+        $('body').append(suggest.$box);
+    // エラーなら参照場所を変える
+    } else if (suggest.is_error) {
+        $('.globalSearch').append(suggest.$box);
+    } else {
+        $('#header header div .headerCore-sub .globalSearch').append(suggest.$box);
+    }
+    
+    return true;
+  };
+  
+  suggest.setEvent = {
+    suggest: function(){
+      suggest.$form.bind({
+        submit: function(){
+          suggest.controller.hideSuggest();
+        }
+      });
+      
+      suggest.$input.bind({
+        keydown: function(e){
+          if ($('.suggest').is(':hidden') && e.keyCode === 9) {
+            return true;
+          }
+          if(e.keyCode === 40 || e.keyCode === 9) {
+            suggest.controller.selectActive('down');
+            return false;
+          } else if(e.keyCode === 38) {
+            suggest.controller.selectActive('up');
+            return false;
+          } else if(e.keyCode === 13) {
+            var active = suggest.controller.enter();
+            if(active) {
+              return false;
+            }
+          } else if(e.keyCode === 27) {
+            suggest.controller.hideSuggest(false);
+            return true;
+          }
+        },
+        keyup: function(e){
+          var val = suggest.$input.val();
+          
+          if(val === suggest.last_val) return;
+          suggest.last_val = val;
+          
+          if(val.length < 2) {
+            suggest.controller.hideSuggest(false);
+            return;
+          }
+          if(/[ａ-ｚ]/.test(val)) return;
+          
+          clearTimeout(suggest.timer);
+          suggest.request_time = Number(new Date());
+          
+          suggest.timer = setTimeout(function(){
+            $.ajax({
+              url: suggest.config.url,
+              data: {
+                term: val,
+                site: suggest.site_id,
+                time: suggest.request_time,
+                touch: (suggest.is_touch ? 1 : 0)
+              },
+              dataType: 'jsonp',
+              success: function(json){
+                if(!json.work) return;
+                if(json.reqtime >= suggest.request_time) {
+                  suggest.controller.showSuggest(json);
+                }
+              }
+            });
+          }, suggest.config.search_threshold);
+        },
+        blur: function(){
+          suggest.controller.hideSuggest();
+        }
+      });
+      
+      suggest.$input.one('keyup', function(){
+        if(typeof _gaq === 'object') {
+          _gaq.push(['_trackEvent', dlsite.getName(), 'suggest', 'launch', , true]);
+        }
+        if(typeof ga === 'function') {
+          ga('send', 'event', dlsite.getName(), 'suggest', 'launch', null);
+        }
+      });
+    },
+    boxPosition: function(){
+      if(suggest.is_touch) {
+        suggest.$input.bind('focus', function(){
+          var pos = suggest.$form.position();
+          if(pos !== undefined) {
+            $('html, body').animate({
+              scrollTop: pos.top
+            }, '300', 'swing');
+          }
+          
+          pos = suggest.$input.offset();
+          suggest.$box.css({
+            top: pos.top + suggest.$input.outerHeight() + suggest.config.suggest_box_margin_bottom,
+            left: pos.left,
+            width: suggest.$input.outerWidth() - 2
+          });
+        });
+      }
+    },
+    changeSiteId: function(){
+      suggest.$site_category.bind('change', function(){
+        suggest.site_id = suggest.util.getsite();
+      });
+      
+      if(suggest.is_touch && suggest.$age_category.length !== 0) {
+        suggest.$age_category.bind('change', function(){
+          suggest.site_id = suggest.util.getsite();
+        });
+      }
+      
+      suggest.site_id = suggest.util.getsite();
+    }
+  };
+  
+  suggest.controller = {
+    showSuggest: function(json){
+      if(json.work.length === 0 && json.maker.length === 0) {
+        suggest.controller.hideSuggest(false);
+        return;
+      }
+      
+      var dom = '';
+      
+      if(suggest.is_touch) {
+        dom = suggest.util.getWorkTouchDom(json.work);
+      } else {
+        var work_dom = suggest.util.getWorkDom(json.work);
+        var maker_dom = suggest.util.getMakerDom(json.maker);
+        var more_dom = suggest.util.getMoreDom(json);
+        dom = work_dom + maker_dom + more_dom;
+      }
+      
+      if(dom === '') {
+        suggest.controller.hideSuggest(false);
+        return;
+      }
+      
+      suggest.$box.empty().append(dom).show();
+      
+      suggest.$box.find('.suggest-mini-icon img').bind('error', function(){
+        if(/RJ[0-9]+/.test($(this).attr('src'))) {
+          $(this).attr('src', $(this).attr('src').replace(/RJ/ig, 'RE'));
+        } else {
+          $(this).attr('src', '/images/web/home/no_img_sam_s.gif');
+        }
+      });
+      
+      suggest.$box.find('.suggest-item').bind('click', function(){
+        var type = $(this).attr('data-type');
+        if(typeof _gaq === 'object') {
+          _gaq.push(['_trackEvent', dlsite.getName(), 'suggest', 'enter_'+type+'_page', , true]);
+        }
+        if(typeof ga === 'function') {
+          ga('send', 'event', dlsite.getName(), 'suggest', 'enter_'+type+'_page', null);
+        }
+      });
+      
+      if(suggest.is_touch) {
+        suggest.$box.find('.suggest-item').bind('touchstart', function(){
+          suggest.controller.selectActive($(this));
+        }).bind('touchend', function(){
+          suggest.controller.selectActive();
+        });
+      } else {
+        suggest.$box.find('.suggest-item').bind('mouseover', function(){
+          suggest.controller.selectActive($(this));
+        });
+      }
+      suggest.$box.find('.suggest-more a').bind('click', function(){
+        suggest.$form.trigger('submit');
+        return false;
+      });
+    },
+    hideSuggest: function(delay){
+      delay = (delay === undefined ? true : delay);
+      clearTimeout(suggest.timer);
+      
+      suggest.timer = setTimeout(function(){
+        suggest.$box.empty().hide();
+      }, delay ? 300 : 0);
+    },
+    selectActive: function(mixed){
+      var $active = suggest.$box.find('.suggest-active');
+      var $item = suggest.$box.find('.suggest-item');
+      $item.removeClass('suggest-active');
+      
+      if(mixed === 'up') {
+        if($active.length === 0) {
+          $item.last().addClass('suggest-active');
+        } else {
+          var $prev = $active.prevAll('.suggest-item').eq(0);
+          
+          if($prev.length === 0) {
+            $item.last().addClass('suggest-active');
+          } else {
+            $prev.addClass('suggest-active');
+          }
+        }
+      } else if(mixed === 'down') {
+        if($active.length === 0) {
+          $item.first().addClass('suggest-active');
+        } else {
+          var $next = $active.nextAll('.suggest-item').eq(0);
+          
+          if($next.length === 0) {
+            $item.first().addClass('suggest-active');
+          } else {
+            $next.addClass('suggest-active');
+          }
+        }
+      } else if(typeof mixed === 'object') {
+        mixed.addClass('suggest-active');
+      }
+    },
+    enter: function(){
+      var $active = suggest.$box.find('.suggest-active');
+      
+      if($active.hasClass('suggest-more')) {
+        suggest.$form.trigger('submit');
+        return false;
+      }
+      
+      if($active.length !== 0) {
+        var link = $active.find('a').attr('href');
+        if(link !== '' && link !== undefined) {
+          var type = $active.attr('data-type');
+          if(typeof _gaq === 'object') {
+            _gaq.push(['_trackEvent', dlsite.getName(), 'suggest', 'enter_'+type+'_page', , true]);
+          }
+          if(typeof ga === 'function') {
+            ga('send', 'event', dlsite.getName(), 'suggest', 'enter_' + type + '_page', null);
+          }
+          location.href = link;
+          return true;
+        }
+      }
+      
+      return false;
+    }
+  };
+  
+  suggest.util = {
+    getsite: function(){
+      var site_id = '';
+      
+      if(suggest.$site_category.length !== 0) {
+        site_id = suggest.$site_category.find('option:selected:eq(0)').val();
+        
+        if(suggest.is_touch && suggest.$age_category.length !== 0) {
+          var age = suggest.$age_category.val();
+          
+          if(age !== undefined && age !== '') {
+            site_id = age+'-'+site_id;
+          }
+          
+          if(suggest.is_female) {
+            site_id = 'female-'+site_id;
+          }
+          
+          if(age === undefined || age === '') {
+            site_id = 'all-'+site_id;
+          }
+        }
+      }
+
+      if (dlsite.getLang() === 'en') {
+        if (site_id) {
+          if (site_id === 'female') {
+            return dlsite.getAgeCategory() + '-' + dlsite.getLang() + '-female';
+          }
+          return dlsite.getAgeCategory() + '-' + dlsite.getLang() + '-male';
+        }
+        return dlsite.getAgeCategory() + '-' + dlsite.getLang();
+      }
+      
+      if(site_id) {
+        return site_id;
+      } else {
+        if(suggest.is_female) {
+          return 'female';
+        } else {
+          if(location.pathname.indexOf('ecchi-eng/girls') !== -1) {
+            return 'girlseng';
+          } else {
+            return dlsite.getAgeCategory() + '-' + dlsite.getLang();
+          }
+        }
+      }
+    },
+    dirname: function(workno){
+      var prefix = workno.substring(0, 2);
+      var id = workno.replace(prefix, '');
+      id = Number(id);
+      id = Math.ceil(id/1000)*1000;
+      prefix = (prefix === 'RE' ? 'RJ': prefix);
+      return prefix+('000000'+id).slice(-6);
+    },
+    siteid: function(workno){
+      var prefix = workno.charAt(0);
+      if(prefix === 'V') return 'professional';
+      if(prefix === 'B') return 'books';
+      return 'doujin';
+    },
+    siteurl: function(workno, age){
+      var prefix = workno.substring(0, 2);
+      var touch = (suggest.is_touch ? '-touch' : '');
+      
+      if(suggest.is_female) {
+        if(prefix === 'BJ') return 'girls-pro' + touch;
+        return 'girls' + touch;
+      }
+      
+      if(age === 'adult') {
+        if(prefix === 'VJ') return 'pro' + touch;
+        if(prefix === 'BJ') return 'books' + touch;
+        if(prefix === 'RE') return 'ecchi-eng' + touch;
+        return 'maniax' + touch;
+      } else {
+        if(prefix === 'VJ') return 'soft' + touch;
+        if(prefix === 'BJ') return 'comic' + touch;
+        if(prefix === 'RE') return 'eng' + touch;
+        return 'home' + touch;
+      }
+    },
+    getMakersSite: function (makerId) {
+      var gender = dlsite.getGender();
+      var prefix = makerId.substr(0,2);
+      var floor = dlsite.getName();
+      var floorMap = null;
+      
+      if (!/^[RBV]G/.test(prefix)) {
+        console.warn('unknown prefix', makerId);
+        return floor;
+      }
+      
+      // 英語
+      if (dlsite.getLang() === 'en') {
+        return floor;
+      }
+      // 全年齢
+      else if (gender === 'all') {
+        floorMap = {
+          RG: 'home',
+          BG: 'comic',
+          VG: 'soft'
+        };
+        return floorMap[prefix];
+      }
+      // 男性向け
+      else if (gender === 'male') {
+        floorMap = {
+          RG: 'maniax',
+          BG: 'books',
+          VG: 'pro'
+        };
+        return floorMap[prefix];
+      }
+      // 女性向け
+      else if (gender === 'female') {
+        if (dlsite.isBL()) {
+          if (floor === 'bl') {
+            if (prefix === 'BG') return 'bl-pro';
+          } else {
+            if (prefix === 'RG') return 'bl';
+          }
+        } else {
+          if (floor === 'girls') {
+            if (prefix === 'BG') return 'girls-pro';
+          } else {
+            if (prefix === 'RG') return 'girls';
+          }
+        }
+      }
+      
+      // そのまま
+      return floor;
+    },
+    getWorkDom: function(work){
+      if(work.length === 0) return '';
+      
+      var dom = '<div class="suggest-head">'+__('work_name')+'</div>';
+      
+      for(var i=0;i<work.length;i++) {
+        var dirname = suggest.util.dirname(work[i].workno);
+        var siteurl = suggest.util.siteurl(work[i].workno, work[i].age_category);
+        var siteid = suggest.util.siteid(work[i].workno);
+        var workno = work[i].workno.replace(/RE/ig, 'RJ');
+        var imagedir = work[i].is_ana ? 'ana' : 'work';
+        var workdir = work[i].is_ana ? 'announce' : 'work';
+        dom += '<li class="suggest-item" data-type="work">';
+        dom += '<a href="/'+siteurl+'/'+workdir+'/=/product_id/'+work[i].workno+'.html">';
+        dom += '<div class="suggest-mini-icon"><img src="//img.dlsite.jp/modpub/images2/'+imagedir+'/'+siteid+'/'+dirname+'/'+workno+(work[i].is_ana ? '_ana' : '')+'_img_sam_mini.jpg"></div>';
+        dom += '<div class="suggest-description">';
+        dom += '<div class="suggest-title suggest-ellipsis">'+work[i].work_name+'</div>';
+        dom += '<div class="suggest-name suggest-ellipsis">'+work[i].maker_name+'</div>';
+        dom += '<div class="suggest-intro suggest-ellipsis">'+work[i].intro_s+'</div>';
+        dom += '<div class="work_genre">';
+        if(work[i].age_category === 'adult') {
+          dom += '<span class="icon_ADL">'+__('ADL')+'</span> ';
+        }
+        dom += '<span class="icon_'+work[i].work_type+'">'+__(work[i].work_type)+'</span></div>';
+        dom += '</div>';
+        dom += '</a>';
+        dom += '</li>';
+      }
+      
+      return dom;
+    },
+    getMakerDom: function(maker){
+      if(maker.length === 0) return '';
+      
+      var dom = '<div class="suggest-head">'+__('maker_name')+'</div>';
+      
+      for(var i=0;i<maker.length;i++) {
+        var dirname = suggest.util.dirname(maker[i].workno);
+        var makersSite = suggest.util.getMakersSite(maker[i].maker_id);
+        var siteid = suggest.util.siteid(maker[i].workno);
+        var workno = maker[i].workno.replace(/RE/ig, 'RJ');
+        dom += '<li class="suggest-item" data-type="maker">';
+        dom += '<a href="/' + makersSite + '/circle/profile/=/maker_id/'+maker[i].maker_id+'.html">';
+        dom += '<div class="suggest-mini-icon"><img src="//img.dlsite.jp/modpub/images2/work/'+siteid+'/'+dirname+'/'+workno+'_img_sam_mini.jpg"></div>';
+        dom += '<div class="suggest-description">';
+        dom += '<div class="suggest-title suggest-ellipsis">'+maker[i].maker_name+'</div>';
+        if (locale === 'ja-jp') {
+          dom += '<div class="suggest-name suggest-ellipsis">'+maker[i].maker_name_kana+'</div>';
+        }
+        dom += '</div>';
+        dom += '</a>';
+        dom += '</li>';
+        
+      }
+      
+      return dom;
+    },
+    getMoreDom: function(json){
+      var count = json.work.length + json.maker.length;
+      var keyword = $.trim(suggest.last_val);
+      return '<div class="suggest-item suggest-more"><a href="#">'+__('more', [keyword])+'<br><span>'+__('more_count', [count])+'</span></a></div>';
+    },
+    getWorkTouchDom: function(work){
+      if(work.length === 0) return '';
+      
+      var dom = '';
+      
+      for(var i=0;i<work.length;i++) {
+        if(i >= suggest.touch_max_show_work) break;
+        
+        var siteurl = suggest.util.siteurl(work[i].workno, work[i].age_category);
+        var workdir = work[i].is_ana ? 'announce' : 'work';
+        dom += '<li class="suggest-item" data-type="work">';
+        dom += '<a href="/'+siteurl+'/'+workdir+'/=/product_id/'+work[i].workno+'.html">';
+        dom += '<div class="suggest-description">';
+        dom += '<div class="suggest-title suggest-ellipsis">'+work[i].work_name+'</div>';
+        dom += '<div class="suggest-name suggest-ellipsis">'+work[i].maker_name+'</div>';
+        dom += '</div>';
+        dom += '</a>';
+        dom += '</li>';
+      }
+      
+      return dom;
+    }
+  };
+  
+  function __(key, args) {
+    var val = messages[key];
+    if (typeof val !== 'string') return '';
+    if (val.indexOf('%s') !== -1 && args instanceof Array) {
+      for (var i = 0, l = args.length; i < l; i++) {
+        val = val.replace('%s', args[i]);
+      }
+    }
+    return val;
+  }
+  
+  $(function(){
+    var init = suggest.init();
+    
+    if(init === false) return;
+    
+    suggest.setEvent.changeSiteId();
+    suggest.setEvent.boxPosition();
+    suggest.setEvent.suggest();
+  });
+  
+})();

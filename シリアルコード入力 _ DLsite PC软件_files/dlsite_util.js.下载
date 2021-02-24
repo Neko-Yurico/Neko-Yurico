@@ -1,0 +1,873 @@
+/*!
+ * DLsite JavaScript Library.
+ *
+ * Copyright (C) 1996-2011 DLsite. All rights reserved.
+ * https://www.dlsite.com/
+ */
+
+'use strict';
+
+// jq, vue, next 共通
+window.dlsite = (function (dlsite) {
+    function deepClone (obj) {
+        return $.extend(true, {}, obj);
+    }
+
+    function deepFreeze (obj) {
+        if (typeof obj !== 'object' || obj === null || Object.isFrozen(obj)) return;
+        Object.freeze(obj);
+        Object.keys(obj).forEach(function(key){
+            deepFreeze(obj[key])
+        });
+    }
+
+    // 売り場
+    dlsite.floor = {
+        home       : { id: 'home'      , name: 'home'       , lang: 'jp', adult: false, gender: 'all'   , category: 'doujin' },
+        soft       : { id: 'soft'      , name: 'soft'       , lang: 'jp', adult: false, gender: 'all'   , category: 'pc'     },
+        comic      : { id: 'comic'     , name: 'comic'      , lang: 'jp', adult: false, gender: 'all'   , category: 'books'  },
+        maniax     : { id: 'maniax'    , name: 'maniax'     , lang: 'jp', adult: true , gender: 'male'  , category: 'doujin' },
+        pro        : { id: 'pro'       , name: 'pro'        , lang: 'jp', adult: true , gender: 'male'  , category: 'pc'     },
+        books      : { id: 'books'     , name: 'books'      , lang: 'jp', adult: true , gender: 'male'  , category: 'books'  },
+        girls      : { id: 'girls'     , name: 'girls'      , lang: 'jp', adult: true , gender: 'female', category: 'doujin' },
+        girlspro   : { id: 'girlspro'  , name: 'girls-pro'  , lang: 'jp', adult: true , gender: 'female', category: 'books'  },
+        girlsdrama : { id: 'girlsdrama', name: 'girls-drama', lang: 'jp', adult: true , gender: 'female', category: 'books'  },
+        bl         : { id: 'bl'        , name: 'bl'         , lang: 'jp', adult: true , gender: 'female', category: 'doujin' },
+        blpro      : { id: 'blpro'     , name: 'bl-pro'     , lang: 'jp', adult: true , gender: 'female', category: 'books'  },
+        bldrama    : { id: 'bldrama'   , name: 'bl-drama'   , lang: 'jp', adult: true , gender: 'female', category: 'books'  },
+        app        : { id: 'app'       , name: 'app'        , lang: 'jp', adult: false, gender: 'all'   , category: 'app'    },
+        appx       : { id: 'appx'      , name: 'appx'       , lang: 'jp', adult: true , gender: 'male'  , category: 'app'    },
+        eng        : { id: 'eng'       , name: 'eng'        , lang: 'en', adult: false, gender: 'all'   , category: 'doujin' },
+        ecchieng   : { id: 'ecchieng'  , name: 'ecchi-eng'  , lang: 'en', adult: true , gender: 'male'  , category: 'doujin' },
+        vr         : { id: 'vr'        , name: 'vr'         , lang: 'jp', adult: false, gender: 'all'   , category: 'doujin' },
+        circle     : { id: 'circle'    , name: 'circle'     , lang: 'jp', adult: false, gender: 'all'   , category: null     },
+        brand      : { id: 'brand'     , name: 'brand'      , lang: 'jp', adult: false, gender: 'all'   , category: null     },
+        publisher  : { id: 'publisher' , name: 'publisher'  , lang: 'jp', adult: false, gender: 'all'   , category: null     }
+    };
+
+    // SP
+    Object.keys(dlsite.floor).forEach(function (key) {
+        if (/soft|circle|publisher/.test(key)) return;
+        // touch複製
+        var fl = deepClone(dlsite.floor[key]);
+        fl.id += 'touch';
+        fl.name += '-touch';
+        dlsite.floor[key+'touch'] = fl;
+    });
+
+    dlsite.canonical = (function () {
+        var el = document.querySelector('link[rel=canonical]');
+        return el ? el.href : '';
+    })();
+
+    dlsite.site = (function () {
+        var name = '';
+        var statics = {
+            'index.html': 'home',
+            'touch.html': 'home-touch'
+        };
+
+        // canonicalを優先させる
+        if (location.pathname === '/index.php') {
+            try {
+                name = dlsite.canonical.split(/\/+/)[2];
+                // canonicalにはtouch入ってない
+                var viewport = document.getElementsByName('viewport');
+                if (viewport.length > 0 && viewport[0].tagName === 'META' && /device-width/.test(viewport[0].content || '') && name.indexOf('touch') === -1) {
+                    name += 'touch';
+                }
+            } catch (error) {
+                name = 'home';
+                console.warn(error);
+            }
+        } else {
+            name = location.pathname.split('/')[1];
+        }
+
+        if (typeof statics[name] === 'string') {
+            name = statics[name];
+        }
+
+        var id = name.replace(/-/g, '');
+
+        return dlsite.floor[id] || dlsite.floor.home;
+    })();
+
+    dlsite.location = (function () {
+        var path = location.pathname.split('/=/');
+        var pathname = path[0];
+        var query = (typeof path[1] === 'string' ? path[1] : '');
+        var action = pathname.replace(/^\/[^/]+/, '');
+
+        if (action.slice(-1) !== '/') {
+            action += '/';
+        }
+
+        var param = [];
+        var queryArr = query.replace(/\.html?(\/|$)/, '/').split('/');
+
+        for (var i = 0, l = queryArr.length; i < l; i += 2) {
+            queryArr[i] && (param[ queryArr[i] ] = (typeof queryArr[i + 1] === 'string') ? queryArr[i + 1] : '');
+        }
+
+        var loc = {
+            'pathname': pathname,
+            'search': '/=/' + query,
+            'query': query,
+            'sitename': dlsite.site.name,
+            'action': action,
+            'param': param
+        };
+
+        Object.keys(location).forEach(function(key){
+            if (typeof loc[key] !== 'undefined' || /function|object/.test(typeof location[key])) return;
+            loc[key] = location[key];
+        });
+
+        return loc;
+    })();
+
+    dlsite.env = (function () {
+        if (/\.dlsite\.com$/.test(location.hostname)) {
+            return /^(dlsite|origin|cdn|\d+)$/.test(location.hostname.split('.')[1]) ? 'prod' : 'dev';
+        }
+        return 'prod';
+    })();
+
+    dlsite.ssl = location.protocol === 'https:';
+
+    // google広告経由
+    dlsite.fromGoogleAds = /[?&]utm_(campaign|source)=google(_youtube)?(_pc|_sp)?(&|$)/.test(location.search);
+
+    // その他特定広告経由
+    dlsite.fromForceAdultcheckAds = /[?&]utm_source=simeji_r?(&|$)/.test(location.search);
+
+    // S3の広告LP経由・STGで動作確認可
+    dlsite.fromS3Promo = /^https:\/\/www\.(stg\.)?dlsite\.com\/modpub\/promo\//.test(location.href);
+
+    dlsite.fromCorporateSite = /^https?:\/\/([a-z]+\.)?eisys\.co\.jp/.test(document.referrer || '');
+
+    // 強制年齢認証
+    dlsite.forceAdultCheck = (function(){
+        // S3はサイトが判定できないのでパラメータの有無で判断する
+        if (dlsite.fromS3Promo && dlsite.fromForceAdultcheckAds) {
+            return true;
+        }
+        if (dlsite.fromGoogleAds || dlsite.fromCorporateSite || dlsite.fromForceAdultcheckAds) {
+            if (dlsite.isFemale() && !dlsite.isDoujin()) {
+                return false;
+            }
+            return dlsite.isAdult();
+        }
+        return false;
+    })();
+
+    // 年齢認証いらないパス
+    dlsite.pathsNeedNotAdultCheck = [
+        /\/[^\/]+\/card\/register$/,
+        /\/bl\/promo\/hell-slot$/,
+    ];
+
+    // 強制年齢認証回避
+    dlsite.avoidAdultCheck = (function() {
+        return dlsite.pathsNeedNotAdultCheck.some(function (regExp) {
+            return regExp.test(location.pathname);
+        });
+    })();
+
+    deepFreeze(dlsite);
+
+    return dlsite;
+})({
+    /** @returns {string} */
+    getId: function () {
+        return this.site.id;
+    },
+    /** @returns {string} */
+    getName: function () {
+        return this.site.name;
+    },
+    /** @returns {string} */
+    getLang: function () {
+        return this.site.lang
+    },
+    /** @returns {string} */
+    getLocale: function () {
+        if (this.getLang() === 'en') return 'en';
+        var locale = document.querySelector('html').lang || '';
+        return /^(ja-jp|zh-(cn|tw)|ko-kr|en-us)$/.test(locale) ? locale : 'ja-jp'
+    },
+    /** @returns {string} */
+    getAgeCategory: function () {
+        return this.site.adult ? 'adult' : 'general';
+    },
+    /** @returns {string} */
+    getGender: function () {
+        return this.site.gender;
+    },
+    /**
+     * @param {string} name
+     * @returns {*|null}
+     */
+    getParameter: function (name) {
+        return this.location.param[name] || null;
+    },
+    /** @returns {boolean} */
+    isAdult: function () {
+        return this.site.adult;
+    },
+    /** @returns {boolean} */
+    isFemale: function () {
+        return this.site.gender === 'female';
+    },
+    /** @returns {boolean} */
+    isTL: function () {
+        return !this.isBL();
+    },
+    /** @returns {boolean} */
+    isBL: function () {
+        return /^bl/.test(this.site.id);
+    },
+    /** @returns {boolean} */
+    isTouch: function () {
+        return /touch$/.test(this.site.id);
+    },
+    /** @returns {boolean} */
+    isLoggedIn: function () {
+        return $.cookie && $.cookie('loginchecked') >= 1;
+    },
+    /** @returns {boolean} */
+    isAdultChecked: function () {
+        return $.cookie && $.cookie('adultchecked') === '1';
+    },
+    /** @returns {boolean} */
+    isDoujin: function () {
+        return this.site.category === 'doujin';
+    },
+    /** @returns {boolean} */
+    isBooks: function () {
+        return this.site.category === 'books';
+    },
+    /** @returns {boolean} */
+    isPcGame: function () {
+        return this.site.category === 'pc';
+    },
+    /** @returns {boolean} */
+    isDrama: function () {
+        return /drama(|touch)$/.test(this.site.id);
+    },
+    /** @returns {boolean} */
+    isGirlsGame: function () {
+        return dlsite.location.action === "/girlsgame/"; // BLゲーを含む
+    },
+    /** @returns {boolean} */
+    isApp: function () {
+      return this.site.category === 'app';
+    },
+    /** @returns {boolean} */
+    isComipo: function () {
+        // 暫定対応（本番環境以外　かつ　comicフロアの場合にcomipoとする）
+        return dlsite.env !== 'prod' && /^comic/.test(this.site.id);
+    }
+});
+
+// jQuery Plugin
+$.extend({
+    // gtm互換
+    /** @deprecated */
+    isSmartphoneSite: function () {
+        if (dlsite.env !== 'prod') console.warn('@deprecated');
+        return dlsite.isTouch();
+    },
+    /** @deprecated */
+    getSiteAgeCategory: function () {
+        if (dlsite.env !== 'prod') console.warn('@deprecated');
+        return dlsite.getAgeCategory();
+    },
+    /** @deprecated */
+    getSiteSexCategory: function () {
+        if (dlsite.env !== 'prod') console.warn('@deprecated');
+        return dlsite.getGender();
+    },
+    /** @deprecated */
+    isFemaleSite: function () {
+        if (dlsite.env !== 'prod') console.warn('@deprecated');
+        return dlsite.isFemale();
+    },
+    /** @deprecated */
+    isAdultSite: function () {
+        if (dlsite.env !== 'prod') console.warn('@deprecated');
+        return dlsite.isAdult();
+    },
+    /** @deprecated */
+    getDLocation: function () {
+        if (dlsite.env !== 'prod') console.warn('@deprecated');
+        return dlsite.location;
+    },
+    /** @deprecated */
+    getSiteName: function () {
+        if (dlsite.env !== 'prod') console.warn('@deprecated');
+        return dlsite.site.name;
+    },
+    /** @deprecated */
+    getSiteLang: function () {
+        if (dlsite.env !== 'prod') console.warn('@deprecated');
+        return dlsite.site.lang;
+    },
+    // end gtm互換
+
+    /** @deprecated _.escape */
+    escapeHTML: function (val) {
+        return jQuery('<div />').text(val).html();
+    },
+
+    /** @deprecated */
+    conv2TouchSite: function (site) {
+        return !site ? null : site + '-touch';
+    },
+
+    /**
+     * 正規表現パターンのエスケープ
+     * @param {string} str
+     * @returns {string}
+     */
+    escapeRegExp: function (str) {
+        return str.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
+    },
+
+    /**
+     * URLをパース
+     * @param {string} url
+     * @returns {object}
+     */
+    parseUrl: function (url) {
+        var a = document.createElement('a');
+        a.href = url;
+        var loc = {
+            protocol: a.protocol,
+            host: a.host,
+            hostname:a.hostname,
+            port: a.port,
+            pathname: a.pathname,
+            hash: a.hash,
+            search: a.search
+        };
+        a = null;
+        return loc;
+    },
+
+    /**
+     * URLコンポーネントを組み立てる
+     * @param {object|Location} comps urlcomponents
+     * @returns {string}
+     */
+    composeUrl: function (comps) {
+        return comps.protocol
+            + '//'
+            + comps.host
+            + comps.pathname
+            + comps.search
+            + comps.hash;
+    },
+
+    /**
+     * URLコンポーネントをセキュア通信用に変更
+     * @param {string} url
+     * @returns {object}
+     */
+    parseUrl2Ssl: function (url) {
+        var loc = $.parseUrl(url);
+
+        loc.protocol = 'https';
+        loc.host = loc.host.replace(/(www)(.*)/, 'ssl' + '$2');
+
+        return loc;
+    },
+
+    /**
+     * touchからpcのurlを取得
+     * @param {string} url
+     * @returns {string}
+     */
+    getPcUrl: function (url) {
+        var comps = $.parseUrl(url),
+            pattern = new RegExp('^\/([a-z-]+)touch\/(.*)$'),
+            matches = pattern.exec(comps.pathname)||[];
+        if (matches.length > 0) {
+            comps.pathname = '/' + matches[1].replace(/-$/, '') + '/' + matches[2];
+        }
+        return $.composeUrl(comps);
+    },
+
+    /**
+     * pcからtouchのurlを取得
+     * @param {string} url
+     * @returns {string}
+     */
+    getTouchUrl: function (url) {
+        var comps = $.parseUrl(url),
+            pattern = new RegExp('^\/([a-z-]+)\/(.*)$');
+        if (comps.pathname.indexOf('touch/') === -1) {
+            comps.pathname = comps.pathname.replace(pattern, '/$1-touch/$2');
+        }
+        return $.composeUrl(comps);
+    },
+
+    /**
+     * java.lang.String.hashCodeのクローン
+     * @param {string} str
+     * @returns {number}
+     * @link http://werxltd.com/wp/2010/05/13
+     */
+    hashCode: function (str) {
+        var hash = 0, i, chr, len;
+        if (str.length === 0) return hash;
+        for (i = 0, len = str.length; i < len; i++) {
+            chr   = str.charCodeAt(i);
+            hash  = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+        }
+        return hash;
+    },
+
+    /**
+     * @deprecated
+     * @see $.isMobile $.isTablet
+     */
+    isSmartphone: function () {
+        return $.isMobile();
+    },
+
+    /**
+     * スマホ判定
+     * @returns {boolean}
+     */
+    isMobile: function () {
+        return /^.*(iPhone|Android.*Mobile|Windows Phone|IEMobile).*$/i.test(window.navigator.userAgent);
+    },
+
+    /**
+     * タブレット判定
+     * @returns {boolean}
+     */
+    isTablet: function () {
+        return /^.*(iPad|Android.*(?!Mobile)).*$/i.test(window.navigator.userAgent);
+    }
+
+});
+
+// PC スマートフォン送客
+(function($){
+    var _show_site = undefined;
+
+    if ($.cookie) {
+        _show_site = $.cookie('_show_site') || undefined;
+
+        // pc link
+        jQuery(function(){
+            $('a[data-platform=pc]').bind('click', function(e){
+                $.cookie('_show_site', 'pc', {"path":"/","domain":".dlsite.com","expires":1000 * 60 * 60 * 72});
+            });
+
+            // smartphone link
+            $('a[data-platform=touch]').bind('click', function(e){
+                $.cookie('_show_site', 'touch', {"path":"/","domain":".dlsite.com","expires":1000 * 60 * 60 * 72});
+            });
+        })
+    }
+
+    // スマートフォン -> PC
+    var canonical = $('link[rel=canonical]').attr('href');
+    var pc_url = canonical ? canonical : $('meta[name="pc-url"]').attr('content');
+    if (
+        pc_url && /dlsite\.com/.test(pc_url) // 親のURLが存在する
+        && ! /-touch/.test(pc_url)      // 親のURLは自分自身ではない
+        && dlsite.isTouch()             // スマホサイトを表示している
+        && ! $.isMobile()               // スマホ端末でアクセスしていない
+        && _show_site !== 'touch'       // スマホサイト表示を選択していない
+     ) {
+        pc_url = pc_url.replace(/\/?\?locale=[\w\-]+$/, ''); // location.searchと被るので消す
+        location.href = (pc_url + (location.search ? '/' + location.search : ''))
+          .replace(/\/\/\?/, '/?')
+          .replace(/index.html\//, 'index.html'); // 総合トップのみ別対応
+
+    }
+
+    // PC -> スマートフォン
+    var alternate = $('link.alternate_smartphone').attr('href');
+    if (
+        alternate && /dlsite\.com/.test(alternate) // 代替URLが存在する
+        && ! dlsite.isTouch()           // スマホサイトを表示していない
+        && $.isMobile()                 // スマホ端末でアクセスしている
+        && _show_site !== 'pc'          // PCサイト表示を選択していない
+    ) {
+        alternate = alternate.replace(/\/?\?locale=[\w\-]+$/, ''); // location.searchと被るので消す
+        location.href = (alternate + (location.search ? (location.pathname.replace('/', '') === ''  ? '' : '/') + location.search : ''))
+            .replace(/\/\/\?/, '/?')
+            .replace(/touch.html\//, 'touch.html'); // 総合トップのみ別対応
+    }
+})(jQuery);
+
+jQuery(function($){
+
+    // form ui @todo form関係は切り出す
+
+    // 重複サブミットの抑制
+    $('form.synchronized').each(function(){
+
+        $(this).bind('submit', function(e){
+
+            // 重複抑制
+            if ($(this).attr('data-synchronized'))
+            {
+                return false;
+            }
+
+            $(this).attr('data-synchronized', 1);
+        });
+
+        // event実行順序の変更
+        $._data(this).events.submit.unshift($._data(this).events.submit.pop());
+
+    });
+
+    // 重複処理のhistory.back対応
+    $(window).bind('pageshow', function(e){
+        $('form.synchronized').removeAttr('data-synchronized');
+    });
+
+    // トグルスイッチ
+    $('form')
+        .each(function (i, form) {
+            var parent = $(form);
+            parent
+                .find('ul.toggle_switch')
+                .each(function (n, ul) {
+                    var swi = $(ul),
+                        name = swi.data('name'),
+                        items = swi.find('li[data-value]'),
+                        activeClass = (dlsite.isTouch()) ? 'current' : 'on';
+
+                    if (!name) {
+                        console.warn('toggle_switch: "data-name" attribute not found.');
+                        return;
+                    } else if (items.length === 0) {
+                        console.warn('toggle_switch: "data-value" attribute not found.');
+                        return;
+                    }
+
+                    var hidden = parent.find('input[name="' + name + '"]');
+                    if (hidden.length === 0) {
+                        parent.append('<input type="hidden" name="' + name + '" value="" />');
+                    }
+
+                    items
+                        .bind('click', function (e) {
+                            var item = $(e.currentTarget);
+                            items.removeClass(activeClass);
+                            item.addClass(activeClass);
+                            parent.find('input[name="' + swi.data('name') + '"]').val(item.data('value'));
+                        });
+                });
+        });
+
+    // end form ui
+
+    // プラグインが読み込まれている場合、メールアドレスのサジェストを設定
+    if (typeof $.fn.emailComplete === 'function') {
+        var $emailInputs = $('._email-complete');
+
+        // 日本語サイトの場合のみ表示
+        if (dlsite.getLang() === 'jp' && $emailInputs.length > 0) {
+            var i = 0;
+
+            $emailInputs.each(function () {
+                $(this).emailComplete({
+                    index: i++,
+                    isSmartphoneSite: dlsite.isTouch()
+                });
+            });
+        }
+    }
+
+    // ネタバレ表示イベントを設定
+    $(document).delegate('.review_open, ._review_open', 'click', function () {
+        var $reviewMain = $(this).parents('._review_main');
+
+        $reviewMain.find('._SW1').hide();
+        $reviewMain.find('._SW2').show();
+    });
+});
+
+// 作品フィルタリング
+(function() {
+    var workBlockWorks = {};
+    var text_no_work = dlsite.getLang() === 'en' ? 'Sorry, we did not find any results for your search.' : '該当する作品が見つかりませんでした';
+    var format_count = dlsite.getLang() === 'en' ? '(#cnt# Titles)' : '（#cnt# 本）';
+    var $emptyTemplate = $(
+        [
+        '<div class="main_liquid_box">',
+        '  <div class="main_liquid_box_inner_2 pb20 pt20">',
+        '    <div class="modify_white_box">',
+        '      <div class="modify_white_box_inner">',
+        '        <div class="modify_white_box_main">',
+        '          <p class="title_message_only">' + text_no_work + '</p>',
+        '        </div>',
+        '      </div>',
+        '    </div>',
+        '  </div>',
+        '</div>'
+        ].join('')
+    );
+
+    function workFiltering(params) {
+        params = (typeof params === 'object' ? params : {});
+        var ageCategory = params.ageCategory || [1, 2, 3];
+        var sexCategory = params.sexCategory || [1, 2, 3];
+
+        $('.work_block').each(function(i) {
+            if(!$(this).hasClass('filter-ready')) {
+                workBlockWorks[i] = $(this).find('td').not('[colspan="2"]');
+                $(this).addClass('filter-ready');
+            }
+        });
+
+        // each
+        $.each(workBlockWorks, function(j, $works) {
+            var works = [];
+            var $tbody = $('<tbody/>')
+
+            $works.each(function(){
+                if($.inArray($(this).data('age-category'), ageCategory) !== -1 && $.inArray($(this).data('sex-category'), sexCategory) !== -1) {
+                    works.push($(this).clone());
+                }
+            });
+
+            if(works.length > 0) {
+                for(var i = 0; i < works.length; i += 2) {
+                    var $tr = $('<tr/>').append(works[i]);
+
+                    if(works[i + 1]) {
+                        $tr.append(works[i + 1]);
+                    } else {
+                        $tr.append($('<td/>'));
+                    }
+
+                    $tbody.append($tr);
+                }
+
+            } else {
+                $tbody.append($emptyTemplate.clone());
+            }
+
+            var $header = $('.work_block:eq(' + j + ') .work_update_left h3 span');
+            $header.text(format_count.replace(/#cnt#/, works.length));
+            $('.work_block:eq(' + j + ') table').empty().append($tbody);
+        });
+    }
+
+    $(window).bind('workFiltering', function(e, option) {
+        workFiltering(option);
+    });
+
+    // underscore.string
+    if (typeof window._ !== 'undefined' && typeof window.s === 'function') {
+        _.mixin(s.exports());
+    }
+
+})();
+
+//流入元計測用(utm_campaign取得cookieにてへ保存)
+(function() {
+    if(location.search.match(/utm_campaign=(.*?)(&|$)/)){
+        var utm_campaign = location.search.match(/utm_campaign=(.*?)(&|$)/)[1];
+        if ($.cookie){
+            $.cookie('utm_c', utm_campaign, {"path":"/","domain":"dlsite.com","expires": 182});
+        }
+    }
+})();
+
+// 新規登録完了ページに表示する直前のURLを保存する
+jQuery(function($){
+    // 定数
+    var INTERNAL_REFERRER = 'INTERNAL_REFERRER';
+
+    // local storage非対応
+    try {
+        if ( ! window.localStorage) {
+            return false;
+        }
+    } catch(e) {
+        return false;
+    }
+
+    /** リファラ保存 */
+
+    // リファラが指定されていなければ現在のURLを使う
+    var current = $('a.set_referrer').get(0);
+    if ( ! current) {
+        current = location;
+    }
+
+    // URL除外
+    var ignored = 0;
+
+    $.each([
+        /^\/index.php/, // POST
+        /\/regist\/.*/, // 登録導線
+        /\/login/,      // ログイン
+    ], function (i, e) {
+        ignored |= e.test(current.pathname);
+    });
+
+    if (ignored) {
+        return false;
+    }
+
+    try {
+        window.localStorage.setItem(INTERNAL_REFERRER, current.pathname);
+    } catch(e) {}
+});
+
+/**
+ * 多言語サイトへの誘導
+ */
+(function (f) {
+  f.init.call(f);
+})({
+
+  language: navigator.languages&&navigator.languages[0]||navigator.language||navigator.userLanguage,
+
+  elements: function () {
+    var param = dlsite.isFemale()
+      ? {source: 'GLjp', content: '935', type: 'girls', path: 'girls/'}
+      : {source: 'DLjp', content: '243', type: '',      path: ''};
+
+    return  {
+      header_tw:         $('<li><a href="https://www.dlsite.com.tw/' + param.path + '?utm_source=' + param.source + '&utm_medium=banner&utm_campaign=TOP&utm_content=' + param.content + '">台灣版</a></li>'),
+      footer_tw:         $('<div class="popup_item type_taiwan ' + param.type + '"><a href="https://www.dlsite.com.tw/' + param.path + '?utm_source=' + param.source + '&utm_medium=banner&utm_campaign=TOP&utm_content=' + param.content + '" class="banner" alt="立即體驗全中文服務！" title="立即體驗全中文服務！"></a><a href="#" class="close" alt="Close" title="Close"></a></div>'),
+      footer_tw_recruit: $('<div class="popup_item type_china ' + param.type + '"><a href="https://eisys.talentcld.com/job/695" class="banner" alt="中国語運用サポート担当者募集中" title="中国語運用サポート担当者募集中"></a><a href="#" class="close" alt="Close" title="Close"></a></div>'),
+      footer_en_work_pc: $('<div class="eng_lead_message"><a href="' + this.workForeign() + '"><strong>Click HERE</strong> for the equivalent English page.</a></div>'),
+      footer_en_work_sp: $('<div class="eng_lead_message"><a href="' + this.workForeign() + '"><strong>Click HERE</strong> for the equivalent English page.</a></div>'),
+      footer_en_point:  $('<div class="popup_item type_eng_point"><a href="/eng/mypage/user/buy/point" class="banner" alt="Buy Points" title="Buy Points"></a><a href="#" class="close" alt="Close" title="Close"></a></div>'),
+      footer_cn:         $('<div class="popup_item type_china howto"><a href="/eng/welcome/chi" class="banner" alt="中文的购买方法请参照这里" title="中文的购买方法请参照这里"></a><a href="#" class="close" alt="Close" title="Close"></a></div>'),
+    };
+  },
+
+  isEnglish: function () {
+    return /en/.test(this.language)
+  },
+
+  isChinese: function () {
+    return /zh/.test(this.language)
+  },
+
+  isTaiwanese: function () {
+    return /zh-tw/i.test(this.language)
+  },
+
+  isForeign: function () {
+    return ! /ja/.test(this.language)
+  },
+
+  siteForeign: function () {
+    var site = 'eng';
+
+    if (dlsite.isAdult()) {
+        site = 'ecchi-eng';
+    }
+
+    if (dlsite.isTouch()) {
+        site = $.conv2TouchSite(site) || site;
+    }
+
+    return site;
+  },
+
+  workForeign: function () {
+    return '/' + this.siteForeign() + '/work/=/product_id/' + (dlsite.location.param.product_id || '').replace('J', 'E') + '.html';
+  },
+
+  init: function () {
+    document.addEventListener('DOMContentLoaded', (function () {
+      // if (dlsite.getLang() === 'jp' && this.isTaiwanese()) {
+      //   // 繁体字で日本語サイトを見ているときは台湾サイトへの誘導リンク
+      //   this.appendTaiwaneseLeader();
+      //
+      //   return;
+      // }
+      //
+      // if ( ! this.isTaiwanese() && this.isChinese()) {
+      //   // 簡体字のときは welcome/chi への誘導リンク
+      //   this.appendChineseLeader();
+      //
+      //   return;
+      // }
+
+      if (dlsite.getLang() === 'en') {
+        if (this.isEnglish() && location.pathname.split('/')[2] === 'cart') {
+          // 英語設定で英語サイトカートページのときはクーポン購入ページへの誘導リンク
+          this.appendEnglishPointLeader();
+        }
+      } else {
+        if (this.isForeign() && !this.isChinese()) {
+          this.appendForeignLeader();
+        }
+      }
+    }).bind(this))
+  },
+
+  appendChineseLeader: function () {
+    this.appendLeaderElement(this.elements().footer_cn);
+  },
+
+  appendTaiwaneseLeader: function () {
+    $('.utility_menu').append(this.elements().header_tw);
+
+    this.appendLeaderElement(this.elements().footer_tw);
+  },
+
+  appendEnglishPointLeader: function () {
+    this.appendLeaderElement(this.elements().footer_en_point, null, '_en_point', 90);
+  },
+
+  appendForeignLeader: function () {
+    if (dlsite.location.action === '/work/') {
+      // 対応する英語作品が存在しない場合は共通フッタを表示する
+      $.ajax({ url: this.workForeign(), type: 'HEAD' }).then(
+        (function () {
+          this.appendLeaderElement(this.elements().footer_en_work_pc, '#work_right_inner');
+          this.appendLeaderElement(this.elements().footer_en_work_sp, '.work_buy_box');
+        }).bind(this)
+      );
+    }
+  },
+
+  appendLeaderElement: function ($element, node, cookie, expires) {
+    cookie  = cookie  || '_jp_user';
+    expires = expires || 365;
+
+    $element.find('a.close').bind('click', (function (event) {
+      this.closeLeaderElement(event, $element, cookie, expires);
+    }).bind(this));
+
+    // 言語ヘッダが存在しないので、Nestは除外する
+    if ( ! /DLsiteNest/.test(navigator.userAgent) && ! $.cookie(cookie)) {
+      if (node) {
+        $(node).prepend($element);
+      } else {
+        if ( ! $('.language_guide_popup').length) {
+          $('body').append($('<div class="language_guide_popup"></div>'));
+        }
+
+        $('.language_guide_popup').append($element);
+      }
+    }
+  },
+
+  closeLeaderElement: function (event, $element, cookie, expires) {
+    event.preventDefault();
+    $.cookie(cookie, 1, { path: '/', domain: '.dlsite.com', expires: expires });
+    $element.remove();
+  }
+});

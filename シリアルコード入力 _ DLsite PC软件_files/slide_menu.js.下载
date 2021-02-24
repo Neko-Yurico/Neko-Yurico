@@ -1,0 +1,194 @@
+$(document).ready(function(){
+    initializeSlideMenus();
+});
+
+var initializeSlideMenus = function (target) {
+    var slideMenu = target ? target : $('div.__slide_menu, h3.__slide_menu');
+    var slideMenuNosave = $('div.__slide_menu_nosave');
+    var storageKey = 'SLIDE_MENU';
+    var cname = '__slideMenu';
+    var setting = {};
+    var storage = null;
+
+    try {
+        // localStorage が使える場合は cookie を削除。ほとぼりが冷めたらこの行は削除してもよい(2017/08/17 k.matsunaga)
+        $.cookie(cname, null, { expires: -1, path: '/', domain: '.dlsite.com' });
+
+        storage = localStorage;
+        setting = storage.getItem(storageKey) ? JSON.parse(storage.getItem(storageKey)) : {};
+    } catch (e) {
+        setting = $.cookie(cname) ? JSON.parse($.cookie(cname)) : {};
+
+        var overflows = [];
+
+        for (var key in setting) {
+            if (/slide_/.test(key)) {
+                overflows.push(key);
+            } else {
+                // 生成した古い id を使用している場合は保持しない
+                delete setting[key];
+            }
+        }
+
+        while (overflows.length > 30) {
+            delete setting[overflows.shift()];
+        }
+    }
+
+    slideMenu.each(function(i) {
+        var target_content = $(this).next();
+        var target_img = $('span', $(this));
+
+        var status = true;
+        var id = $(this).attr("id");
+
+        if ($(this).hasClass("__slide_menu_default_close")) {
+            status = false;
+        }
+
+        if (id in setting) {
+            if (setting[id] == false) {
+                status = false;
+            } else {
+                status = true;
+            }
+        }
+
+        if (status == true) {
+            target_content.show();
+            target_img.addClass("slideOpen");
+        } else {
+            target_content.hide();
+            target_img.addClass("slideClose");
+        }
+    });
+
+    slideMenuNosave.each(function(i) {
+        var target_content = $(this).next();
+        var target_img = $('span', $(this));
+
+        var status = true;
+
+        if ($(this).hasClass("__slide_menu_default_close")) {
+            status = false;
+        }
+
+        if (status == true) {
+            target_content.show();
+            target_img.addClass("slideOpen");
+        } else {
+            target_content.hide();
+            target_img.addClass("slideClose");
+        }
+
+    });
+
+    var change = function(){
+        var target_content = $(this).next();
+        var target_img = $('span', $(this));
+
+        target_content.slideToggle('fast');
+        target_img.toggleClass("slideOpen");
+        target_img.toggleClass("slideClose");
+    }
+
+    slideMenu.click(change).css("cursor", "pointer");
+    slideMenuNosave.click(change).css("cursor", "pointer");
+
+    $(window).unload(function(){
+        var status = true;
+
+        $('div.__slide_menu, h3.__slide_menu').each(function(i) {
+            var target_content = $(this).next();
+
+            if (target_content.css("display") == "none") {
+                status = false;
+            } else {
+                status = true;
+            }
+
+            setting[$(this).attr("id")] = status;
+        });
+
+        var v = JSON.stringify(setting);
+
+        if (storage) {
+            storage.setItem(storageKey, v);
+        } else {
+            $.cookie(cname, v, {expires: 30, path: '/', domain: '.dlsite.com'});
+        }
+    });
+};
+
+(function($, window) {
+    "use strict";
+    $.mygenre_cache = {
+        url: null,
+        html_key: 'SEARCHWORD_FOLDERS_CACHE_HTML',
+        expire_key: 'SEARCHWORD_FOLDERS_CACHE_EXPIRE',
+        $target: null,
+        sid: null,
+        support_local_storage: false,
+        lang: 'jp',
+        init: function(params) {
+            try {
+                $.extend(this, params);
+                if (window['localStorage']) {
+                    this.support_local_storage = true;
+                }
+            } catch (e) {
+            }
+            return this;
+        },
+        get: function() {
+            if (this.support_local_storage) {
+                var html = localStorage.getItem(this.html_key + '_' + this.lang);
+                var expire = JSON.parse(localStorage.getItem(this.expire_key + '_' + this.lang));
+
+                if (html && expire && Date.now() < expire.expire && this.sid === expire.sid) {
+                    this.$target
+                        .html(html)
+                        .addClass('_loaded')
+                        .triggerHandler('loaded');
+                    return this;
+                }
+            }
+
+            var self = this;
+            $.ajax({
+                url: this.url,
+                dataType: 'html',
+                success: function(html) {
+                    if (self.support_local_storage) {
+                        try {
+                            localStorage.setItem(self.html_key + '_' + self.lang, html);
+                            localStorage.setItem(self.expire_key + '_' + self.lang, JSON.stringify({expire: Date.now() + 60 * 60 * 1000, sid: self.sid}));
+                        } catch (e) {
+                        }
+                    }
+                    self.$target
+                        .html(html)
+                        .addClass('_loaded')
+                        .triggerHandler('loaded');
+                }
+            });
+            return this;
+        },
+        clear: function() {
+            try {
+                if (window['localStorage']) {
+                    var lang_list = ['jp', 'en'];
+                    for (var i = 0; i < lang_list.length; i++) {
+                        localStorage.removeItem(this.html_key + '_' + lang_list[i]);
+                        localStorage.removeItem(this.expire_key + '_' + lang_list[i]);
+                    }
+                }
+            } catch (e) {
+            }
+            return this;
+        },
+        initializeSlideMenus: function(target) {
+            initializeSlideMenus(target);
+        }
+    };
+})(jQuery, window);
