@@ -2,7 +2,7 @@
 layout: post
 title: 建站经历
 date: 2021-2-23
-categories: blog,other
+categories: blog
 tags: [杂谈]
 description: 
 ---
