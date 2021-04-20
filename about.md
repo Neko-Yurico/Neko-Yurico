@@ -19,7 +19,7 @@ header-img: "img/light-green.jpg"
 <p style="text-align: center;">Country Ranking： #220~</p>
 <p style="text-align: center;">================================</p>
 <p style="text-align: center;">ctf队名：啥都不会</p>
-<p style="text-align: center;">成员&直播间：帆（工具人队长#1），<a title="LxEgotist的直播间" href="https://live.bilibili.com/300832" target="_blank" rel="noopener noreferrer">LxEgotist（工具人队长#2）</a>，<a title="貓耳ゆりこ的直播间" href="https://live.bilibili.com/29241" target="_blank" rel="noopener noreferrer">Neko_Yurico（工具人队长#3）</a>，小菜鸡<span class="heimu" title="你知道的太多了">啥都不会的隐藏第四人</span>，大菜鸡（临时）</p>
+<p style="text-align: center;">成员&直播间：帆（工具人队长#1），<a title="LxEgotist的直播间" href="https://live.bilibili.com/300832" target="_blank" rel="noopener noreferrer">LxEgotist（工具人队长#2）</a>，<a title="貓耳ゆりこ的直播间" href="https://live.bilibili.com/29241" target="_blank" rel="noopener noreferrer">Neko_Yurico（工具人队长#3）</a>，<a title="骚年叫我红领巾的直播间" href="https://live.bilibili.com/13114625" target="_blank" rel="noopener noreferrer">骚年叫我红领巾</a><span class="heimu" title="你知道的太多了">啥都不会的隐藏第四人</span>，大菜鸡（临时）</p>
 <p style="text-align: center;">================================</p>
 <p style="text-align: center;"><a title="欢迎 &middot; 知识库 | osu!" href="https://osu.ppy.sh/wiki/zh/Welcome" target="_blank" rel="noopener noreferrer">Welcome to OSU!</a></p>
 <p style="text-align: center;"><a title="CTF Wiki" href="https://wiki.x10sec.org/" target="_blank" rel="noopener noreferrer">CTF wiki</a></p>
