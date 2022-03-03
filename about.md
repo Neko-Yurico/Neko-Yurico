@@ -6,6 +6,7 @@ header-img: "img/light-green.jpg"
 ---
 
 <p style="text-align: center;">这里是Neko_Yurico！</p>
+<p style="text-align: center;"><a title="简历下载" href="/source/others/简历.pdf" target="_blank" rel="noopener noreferrer">简历下载</a></p>
 <p style="text-align: center;">&nbsp;&nbsp;</p>
 <p style="text-align: center;">================================</p>
 <p style="text-align: center;">ff14莫古力 咚咚一库贼@白金幻象《怪咖》</p>
